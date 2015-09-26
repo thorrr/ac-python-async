@@ -86,7 +86,7 @@
           nil t)
          (match-beginning 1))))
 
-(defun ac-python:get-named-else-internal-process-if-exists ()
+(defun ac-python-async:get-named-else-internal-process-if-exists ()
   "return the global or internal process if either exists.  Don't
   create processes.  Prefer global to internal."
   (let* ((global-process (python-shell-get-process))
@@ -100,7 +100,7 @@
 
 (defun python-symbol-completions (symbol)
   "Adapter to make ac-python work with builtin emacs python mode (by gallina)"
-  (let* ((process (ac-python:get-named-else-internal-process-if-exists))
+  (let* ((process (ac-python-async:get-named-else-internal-process-if-exists))
          (whole-line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
          (psc (python-shell-completion-get-completions process whole-line symbol)))
     (if psc psc "")))
