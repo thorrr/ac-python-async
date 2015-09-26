@@ -96,9 +96,9 @@
 (defun ac-python-async:get-python-symbol-at-point ()
   "Return python symbol at point.
    Assumes symbol can be alphanumeric, `.' or `_'."
-  (let ((end (point))
-        (start (ac-python-start-of-expression))
-        (out (ignore-errors (buffer-substring-no-properties start end))))
+  (let* ((end (point))
+         (start (ac-python-async:start-of-expression))
+         (out (buffer-substring-no-properties start end)))
     (if out out "")))
  
  
@@ -110,8 +110,8 @@ point."
  
 (defvar ac-source-python-async
   '(
-    (init . ac-python:completion-request)
-    (candidates . ac-python:direct-matches)
+    (init . ac-python-async:completion-request)
+    (candidates . ac-python-async:direct-matches)
     (prefix . ac-python-async:start-of-expression)
     (symbol . "f")
     (requires . 2))
