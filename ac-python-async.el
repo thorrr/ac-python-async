@@ -85,10 +85,22 @@
               (group (1+ (regexp "[[:alnum:]._]"))) point)
           nil t)
          (match-beginning 1))))
- 
+
+(defun ac-python:get-named-else-internal-process-if-exists ()
+  "return the global or internal process if either exists.  Don't
+  create processes.  Prefer global to internal."
+  (let* ((global-process (python-shell-get-process))
+         (global-proc-buffer-name (format "*%s*" global-process))
+         (internal-proc-name (python-shell-internal-get-process-name))
+         (internal-proc-buffer-name (format " *%s*" internal-proc-name))
+         (internal-process-live (process-live-p internal-proc-name)))
+    (cond (global-process (get-buffer-process global-proc-buffer-name))
+          (internal-process-live (get-buffer-process internal-proc-buffer-name))
+          ('t nil))))
+
 (defun python-symbol-completions (symbol)
   "Adapter to make ac-python work with builtin emacs python mode (by gallina)"
-  (let* ((process (python-get-named-else-internal-process))
+  (let* ((process (ac-python:get-named-else-internal-process-if-exists))
          (whole-line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
          (psc (python-shell-completion-get-completions process whole-line symbol)))
     (if psc psc "")))
