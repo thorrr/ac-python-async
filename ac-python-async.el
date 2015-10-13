@@ -89,13 +89,13 @@
 (defun ac-python-async:get-named-else-internal-process-if-exists ()
   "return the global or internal process if either exists.  Don't
   create processes.  Prefer global to internal."
-  (let* ((global-process (python-shell-get-process))
-         (global-proc-buffer-name (format "*%s*" global-process))
+  (let* ((global-proc-name  (python-shell-get-process-name nil))
+         (global-proc-buffer-name (format "*%s*" global-proc-name))
+         (global-running (comint-check-proc global-proc-buffer-name))
          (internal-proc-name (python-shell-internal-get-process-name))
-         (internal-proc-buffer-name (format " *%s*" internal-proc-name))
-         (internal-process-live (process-live-p internal-proc-name)))
-    (cond (global-process (get-buffer-process global-proc-buffer-name))
-          (internal-process-live (get-buffer-process internal-proc-buffer-name))
+         (internal-process-live (process-live-p (get-process internal-proc-name))))
+    (cond (global-running (get-buffer-process global-proc-buffer-name))
+          (internal-process-live (get-process internal-proc-name))
           ('t nil))))
 
 (defun python-symbol-completions (symbol)
