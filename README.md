@@ -9,7 +9,7 @@ Keywords: vc tools
 
 Package: ac-python-async
 
-Package-Requires: ((deferred "20150309.2052"))
+Package-Requires: ((auto-complete "1.5.0") (deferred "20150309.2052"))
 
 Installation
 ------------
