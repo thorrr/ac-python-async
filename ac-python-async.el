@@ -1,3 +1,5 @@
+;;; ac-python-async.el --- Simple Python Completion Source for Auto-Complete
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Simple Python Completion Source for Auto-Complete
 ;;;;; =================================================
@@ -132,3 +134,4 @@ point."
 (add-hook 'python-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-python-async)))
  
 (provide 'ac-python-async)
+;;; ac-python-async.el ends here
