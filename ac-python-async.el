@@ -53,8 +53,11 @@
 ;;;;;     More information: http://chrispoole.com/project/ac-python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Code:
 
+(require 'auto-complete)
 (require 'deferred)
+(require 'python)
  
 (defvar ac-python-async:last-completion nil)
 (defvar ac-python-async:pos -1)
