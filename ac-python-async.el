@@ -1,3 +1,5 @@
+;;; ac-python-async.el --- Simple Python Completion Source for Auto-Complete
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Simple Python Completion Source for Auto-Complete
 ;;;;; =================================================
@@ -10,7 +12,7 @@
 ;;;;;
 ;;;;; Keywords: vc tools
 ;;;;; Package: ac-python-async
-;;;;; Package-Requires: ((deferred "20150309.2052"))
+;;;;; Package-Requires: ((auto-complete "1.5.0") (deferred "20150309.2052"))
 ;;;;;
 ;;;;; Installation
 ;;;;; ------------
@@ -51,8 +53,11 @@
 ;;;;;     More information: http://chrispoole.com/project/ac-python
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Code:
 
+(require 'auto-complete)
 (require 'deferred)
+(require 'python)
  
 (defvar ac-python-async:last-completion nil)
 (defvar ac-python-async:pos -1)
@@ -132,3 +137,4 @@ point."
 (add-hook 'python-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-python-async)))
  
 (provide 'ac-python-async)
+;;; ac-python-async.el ends here
