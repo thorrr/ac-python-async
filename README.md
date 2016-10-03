@@ -48,4 +48,4 @@ Based on ac-python by Chris Poole:
 
 <chris@chrispoole.com>
 
-More information: http://chrispoole.com/project/ac-python
+More information: http://chrispoole.com/project/emacs/ac-python/
