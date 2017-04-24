@@ -58,7 +58,15 @@
 (require 'auto-complete)
 (require 'deferred)
 (require 'python)
- 
+
+(defcustom ac-python-async:get-completion-process (lambda ()
+  (python-shell-get-process))
+  "By default this uses (python-shell-get-process) to get the
+autocompete process.  Override this if you want to use something
+else" 
+  :type 'function)
+
+
 (defvar ac-python-async:last-completion nil)
 (defvar ac-python-async:pos -1)
  
@@ -91,21 +99,23 @@
           nil t)
          (match-beginning 1))))
 
-(defun ac-python-async:get-named-else-internal-process-if-exists ()
-  "return the global or internal process if either exists.  Don't
-  create processes.  Prefer global to internal."
-  (let* ((global-proc-name  (python-shell-get-process-name nil))
-         (global-proc-buffer-name (format "*%s*" global-proc-name))
-         (global-running (comint-check-proc global-proc-buffer-name))
-         (internal-proc-name (python-shell-internal-get-process-name))
-         (internal-process-live (process-live-p (get-process internal-proc-name))))
-    (cond (global-running (get-buffer-process global-proc-buffer-name))
-          (internal-process-live (get-process internal-proc-name))
-          ('t nil))))
+
+;; using internal process is too unusual in most setups
+;; (defun ac-python-async:get-named-else-internal-process-if-exists ()
+;;   "return the global or internal process if either exists.  Don't
+;;   create processes.  Prefer global to internal."
+;;   (let* ((global-proc-name  (python-shell-get-process-name nil))
+;;          (global-proc-buffer-name (format "*%s*" global-proc-name))
+;;          (global-running (comint-check-proc global-proc-buffer-name))
+;;          (internal-proc-name (python-shell-internal-get-process-name))
+;;          (internal-process-live (process-live-p (get-process internal-proc-name))))
+;;     (cond (global-running (get-buffer-process global-proc-buffer-name))
+;;           (internal-process-live (get-process internal-proc-name))
+;;           ('t nil))))
 
 (defun python-symbol-completions (symbol)
   "Adapter to make ac-python work with builtin emacs python mode (by gallina)"
-  (let* ((process (ac-python-async:get-named-else-internal-process-if-exists))
+  (let* ((process (funcall ac-python-async:get-completion-process))
          (whole-line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
          (psc (python-shell-completion-get-completions process whole-line symbol)))
     (if psc psc "")))
