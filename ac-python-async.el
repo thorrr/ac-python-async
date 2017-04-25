@@ -116,8 +116,12 @@ else"
 (defun python-symbol-completions (symbol)
   "Adapter to make ac-python work with builtin emacs python mode (by gallina)"
   (let* ((process (funcall ac-python-async:get-completion-process))
-         (whole-line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-         (psc (python-shell-completion-get-completions process whole-line symbol)))
+         (whole-line (if (> emacs-major-version 24) nil
+                       (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+         (psc (python-shell-completion-get-completions
+               process
+               whole-line ;; in emacs 25, this is the 'import' argument which should be held nil
+               symbol)))
     (if psc psc "")))
  
 (defun ac-python-async:get-python-symbol-at-point ()
