@@ -153,6 +153,7 @@ point."
     (prefix . ac-python-async:start-of-expression)
     (symbol . "f")  ;; TOOD - not every completion is a function type.  parse type(<symbol>)
     (document . ac-python-async:get-ac-help)
+    (cache)
     (requires . 2))
   "Source for python completion.")
  
