@@ -43,7 +43,7 @@
 ;;;;;
 ;;;;; ---
 ;;;;;
-;;;;; Version: 20170424
+;;;;; Version: 20170425
 ;;;;; License: MIT
 ;;;;; Author: Jason Bell  <jbellthor@gmail.com>
 ;;;;;
@@ -89,13 +89,25 @@ else"
       ac-python-async:last-completion
     nil))
 
-(defun ac-python-async:grab-docs (symbol-with-properties)
-  (let* ((plain-symbol (substring-no-properties symbol-with-properties))
+(defun ac-python-async:get-ac-help (symbol-with-properties)
+    (let* ((plain-symbol (substring-no-properties symbol-with-properties))
          (symbol (if (string-suffix-p "(" plain-symbol)
                      (substring plain-symbol 0 -1)  ;; cut off parenthesis
                    plain-symbol))
-         (eldoc (python-eldoc-at-point symbol)))
-    (if eldoc eldoc "")))
+         (process (funcall ac-python-async:get-completion-process))
+         (eldoc
+          (python-shell-send-string-no-output
+           (format (concat
+                    "import pydoc;\n"
+                    "try:\n"
+                    "  print(pydoc.plain(pydoc.render_doc(%s, '%s')))\n"
+                    "except:\n"
+                    "  print('')") symbol "%s" ;;second argument to render_doc is a %s
+                   )
+           process)
+          ;;(python-eldoc-at-point symbol) ;; simple built-in eldoc
+          ))
+      (if eldoc eldoc "")))
 
 (defun ac-python-async:start-of-expression ()
   "Return point of the start of python expression at point.
@@ -140,7 +152,7 @@ point."
     (candidates . ac-python-async:direct-matches)
     (prefix . ac-python-async:start-of-expression)
     (symbol . "f")  ;; TOOD - not every completion is a function type.  parse type(<symbol>)
-    (document . ac-python-async:grab-docs)
+    (document . ac-python-async:get-ac-help)
     (requires . 2))
   "Source for python completion.")
  
