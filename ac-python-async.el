@@ -90,6 +90,7 @@ else"
     nil))
 
 (defun ac-python-async:get-ac-help (symbol-with-properties)
+  (message-no-echo (concat "get-ac-help(" symbol-with-properties ")"))
     (let* ((plain-symbol (substring-no-properties symbol-with-properties))
          (symbol (if (string-suffix-p "(" plain-symbol)
                      (substring plain-symbol 0 -1)  ;; cut off parenthesis
@@ -100,7 +101,8 @@ else"
            (format (concat
                     "import pydoc;\n"
                     "try:\n"
-                    "  print(pydoc.plain(pydoc.render_doc(%s, '%s')))\n"
+                    "  a = pydoc.plain(pydoc.render_doc(%s, '%s'))[0:1600]\n"  ;;limit to approx 80x20
+                    "  print(a)\n"
                     "except:\n"
                     "  print('')") symbol "%s" ;;second argument to render_doc is a %s
                    )
