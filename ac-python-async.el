@@ -129,7 +129,8 @@ else"
    Assumes symbol can be alphanumeric, `.' or `_'."
   (let* ((end (point))
          (start (ac-python-async:start-of-expression))
-         (out (buffer-substring-no-properties start end)))
+         (out (if (not start) nil
+                (buffer-substring-no-properties start end))))
     (if out out "")))
  
  
